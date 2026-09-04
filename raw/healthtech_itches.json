@@ -1,0 +1,102 @@
+[
+  {
+    "title": "Why do medicine prices vary wildly across pharmacy chains?",
+    "category": "HealthTech",
+    "description": "Consumers discover the same prescription medicines are priced dramatically differently across pharmacy chains, with variations of 30-50% between retailers for identical drugs and dosages, because there is no transparent price comparison app allowing patients to find the most affordable nearby source before purchasing.",
+    "severity": 7,
+    "tam": 7,
+    "whitespace": 7.5,
+    "frequency": 8,
+    "itch": 91
+  },
+  {
+    "title": "Why do patients lack tools to compare conflicting diagnoses confidently?",
+    "category": "HealthTech",
+    "description": "Patients seeking second medical opinions for serious health conditions struggle to determine if conflicting diagnoses, contradictory treatment plans, or significantly different prescriptions from multiple doctors are due to legitimate medical complexity or potential misdiagnosis requiring further specialist consultation and diagnostic confirmation.",
+    "severity": 6,
+    "tam": 7,
+    "whitespace": 6.5,
+    "frequency": 10,
+    "itch": 82.5
+  },
+  {
+    "title": "Why do emergency rooms lack systems to prioritize critical patients instantly?",
+    "category": "HealthTech",
+    "description": "Hospital emergency departments operate on chaotic first-come-first-serve protocols where critical patients wait behind less urgent cases because facilities lack AI-powered triage systems that can instantly assess vital signs, symptom severity, and medical urgency to prioritize life-threatening conditions over minor ailments.",
+    "severity": 7,
+    "tam": 7,
+    "whitespace": 7,
+    "frequency": 8,
+    "itch": 81.5
+  },
+  {
+    "title": "Why can't doctors access patient medical histories across hospitals?",
+    "category": "HealthTech",
+    "description": "Doctors treating patients in emergencies or follow-up visits across different hospitals cannot access consolidated medical histories, previous prescriptions, drug allergy information, or ongoing medication regimens because health records remain fragmented across individual hospitals with no interoperable national health database system.",
+    "severity": 9,
+    "tam": 7,
+    "whitespace": 7.5,
+    "frequency": 9,
+    "itch": 80
+  },
+  {
+    "title": "Why do rural patients waste time traveling for diagnostic tests?",
+    "category": "HealthTech",
+    "description": "Patients in small towns and villages requiring basic blood tests, X-rays, or ultrasounds must travel 30-50 kilometers to reach diagnostic laboratories in larger cities, wasting entire days in transit and delaying treatment decisions because mobile diagnostic vans or local sample collection services are unavailable in rural areas.",
+    "severity": 6,
+    "tam": 7,
+    "whitespace": 7,
+    "frequency": 9,
+    "itch": 79.5
+  },
+  {
+    "title": "Why are diagnostic services not designed for women’s privacy and mobility needs?",
+    "category": "HealthTech",
+    "description": "Female patients, particularly married women in conservative areas, postpone essential diagnostic tests because medical facilities and transportation options lack adequate privacy, female-friendly infrastructure, or same-gender accompaniment services that would allow them to visit clinics independently without male family escorts.",
+    "severity": 10,
+    "tam": 10,
+    "whitespace": 9,
+    "frequency": 9,
+    "itch": 78.5
+  },
+  {
+    "title": "Why is finding specialist doctors in smaller cities hard?",
+    "category": "HealthTech",
+    "description": "Patients in tier 2 and tier 3 cities needing consultations with neurologists, cardiologists, oncologists, or other super-specialists face appointment wait times of 3-4 weeks or must travel to metro cities because there are too few specialists serving large populations and no telemedicine platforms connecting them efficiently.",
+    "severity": 8,
+    "tam": 10,
+    "whitespace": 8.5,
+    "frequency": 7,
+    "itch": 77
+  },
+  {
+    "title": "Why do branded drugs dominate prescriptions despite equivalent, cheaper generic alternatives?",
+    "category": "HealthTech",
+    "description": "Doctors and patients continue prescribing expensive branded pharmaceuticals over affordable generic equivalents containing the same active ingredients and dosages because of lingering suspicions about generic quality, manufacturing standards, bioavailability, and effectiveness despite regulatory equivalence certifications.",
+    "severity": 8,
+    "tam": 10,
+    "whitespace": 8.5,
+    "frequency": 8,
+    "itch": 76
+  },
+  {
+    "title": "Why do hospitals hide procedure pricing from patients?",
+    "category": "HealthTech",
+    "description": "Patients admitted for routine procedures or surgeries receive massive bills with line items for consumables, doctor fees, and facility charges that bear no relation to market rates because hospitals don't disclose standardized procedure pricing upfront, leaving patients vulnerable to price gouging during medical emergencies.",
+    "severity": 9,
+    "tam": 10,
+    "whitespace": 9,
+    "frequency": 8,
+    "itch": 74.5
+  },
+  {
+    "title": "Why can't patients access digital copies of medical records?",
+    "category": "HealthTech",
+    "description": "Healthcare consumers visiting multiple doctors and specialists must carry physical folders of paper reports, X-ray films, and prescription histories because most hospitals don't provide patients with digital copies of their own medical data, test results, and imaging studies in portable formats.",
+    "severity": 9,
+    "tam": 10,
+    "whitespace": 8.5,
+    "frequency": 9,
+    "itch": 73.5
+  }
+]

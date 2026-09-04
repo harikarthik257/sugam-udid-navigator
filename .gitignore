@@ -1,0 +1,10 @@
+# Phase 1 scraper deps (root package.json)
+/node_modules
+
+# OS
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+.idea/

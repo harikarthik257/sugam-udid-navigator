@@ -1,0 +1,168 @@
+{
+  "_meta": {
+    "scheme": "UDID (Unique Disability ID) / Disability Certificate",
+    "compiled": "2026-09-03",
+    "disclaimer": "Compiled from public government sources for guidance only. Requirements can vary by state and change over time. Always verify current requirements with your nearest District Disability Rehabilitation Centre, Medical Board/CMO office, or the official portal before relying on this checklist.",
+    "sources": [
+      "https://depwd.gov.in/en/unique-disability-id-udid/",
+      "https://www.swavlambancard.gov.in/",
+      "RPwD Act 2016, Schedule (list of 21 recognized disabilities)",
+      "https://socialjustice.gov.in/writereaddata/UploadFile/adipsch.pdf (ADIP scheme)"
+    ]
+  },
+  "process": {
+    "portal": "https://www.swavlambancard.gov.in/",
+    "cost": "Free — no application fee, processing fee, or hidden costs.",
+    "steps": [
+      "Register on the UDID portal (swavlambancard.gov.in) with your basic details.",
+      "Fill the online Disability Certificate + UDID application form and upload the required documents (offline/paper submission is also accepted at your district office and gets digitized later).",
+      "Your application is routed to a Medical Board / Chief Medical Officer (CMO) office, where specialists assess and certify your disability category and percentage.",
+      "Once certified, your Disability Certificate and UDID card are issued and can be downloaded/collected."
+    ],
+    "typical_documents": [
+      "Aadhaar card (mandatory for UDID applications since the August 2023 notification)",
+      "Recent passport-size photograph",
+      "Address proof (Aadhaar / Voter ID / utility bill)",
+      "Any existing medical records related to the condition, if available"
+    ],
+    "note_on_percentage": "A disability assessment of 40% or more is the threshold most commonly required to access statutory benefits, reservations, and concessions under the RPwD Act — but you can apply for a UDID/certificate at any assessed percentage; the Medical Board determines your actual percentage during assessment, not the applicant."
+  },
+  "disability_categories": [
+    {
+      "id": "blindness",
+      "name": "Blindness",
+      "group": "Vision",
+      "typical_additional_docs": ["Ophthalmologist's vision test report"]
+    },
+    {
+      "id": "low_vision",
+      "name": "Low Vision",
+      "group": "Vision",
+      "typical_additional_docs": ["Ophthalmologist's vision test report"]
+    },
+    {
+      "id": "hearing_impairment",
+      "name": "Hearing Impairment (Deaf and Hard of Hearing)",
+      "group": "Hearing",
+      "typical_additional_docs": ["Audiogram / audiologist's report"]
+    },
+    {
+      "id": "speech_language",
+      "name": "Speech and Language Disability",
+      "group": "Speech",
+      "typical_additional_docs": ["Speech-language pathologist's assessment"]
+    },
+    {
+      "id": "locomotor",
+      "name": "Locomotor Disability",
+      "group": "Physical",
+      "typical_additional_docs": ["Orthopedic assessment; X-ray/imaging if applicable"]
+    },
+    {
+      "id": "dwarfism",
+      "name": "Dwarfism",
+      "group": "Physical",
+      "typical_additional_docs": ["Orthopedic/growth assessment report"]
+    },
+    {
+      "id": "cerebral_palsy",
+      "name": "Cerebral Palsy",
+      "group": "Physical",
+      "typical_additional_docs": ["Neurology / pediatric assessment report"]
+    },
+    {
+      "id": "muscular_dystrophy",
+      "name": "Muscular Dystrophy",
+      "group": "Physical",
+      "typical_additional_docs": ["Neurology assessment report"]
+    },
+    {
+      "id": "thalassemia",
+      "name": "Thalassemia",
+      "group": "Blood disorder",
+      "typical_additional_docs": ["Hematologist's report / blood test records"]
+    },
+    {
+      "id": "hemophilia",
+      "name": "Hemophilia",
+      "group": "Blood disorder",
+      "typical_additional_docs": ["Hematologist's report / blood test records"]
+    },
+    {
+      "id": "sickle_cell",
+      "name": "Sickle Cell Disease",
+      "group": "Blood disorder",
+      "typical_additional_docs": ["Hematologist's report / blood test records"]
+    },
+    {
+      "id": "chronic_neurological",
+      "name": "Chronic Neurological Conditions",
+      "group": "Neurological",
+      "typical_additional_docs": ["Neurologist's assessment report"]
+    },
+    {
+      "id": "multiple_sclerosis",
+      "name": "Multiple Sclerosis",
+      "group": "Neurological",
+      "typical_additional_docs": ["Neurologist's assessment report"]
+    },
+    {
+      "id": "parkinsons",
+      "name": "Parkinson's Disease",
+      "group": "Neurological",
+      "typical_additional_docs": ["Neurologist's assessment report"]
+    },
+    {
+      "id": "intellectual_disability",
+      "name": "Intellectual Disability",
+      "group": "Intellectual/Developmental",
+      "typical_additional_docs": ["Psychologist's / developmental assessment report"]
+    },
+    {
+      "id": "specific_learning_disability",
+      "name": "Specific Learning Disabilities",
+      "group": "Intellectual/Developmental",
+      "typical_additional_docs": ["Psychologist's / educational assessment report"]
+    },
+    {
+      "id": "autism",
+      "name": "Autism Spectrum Disorder",
+      "group": "Intellectual/Developmental",
+      "typical_additional_docs": ["Developmental pediatrician's / psychologist's assessment report"]
+    },
+    {
+      "id": "mental_illness",
+      "name": "Mental Illness",
+      "group": "Mental health",
+      "typical_additional_docs": ["Psychiatrist's assessment report"]
+    },
+    {
+      "id": "leprosy_cured",
+      "name": "Leprosy Cured Person",
+      "group": "Post-medical",
+      "typical_additional_docs": ["Medical records confirming cured status"]
+    },
+    {
+      "id": "acid_attack_victim",
+      "name": "Acid Attack Victim",
+      "group": "Post-medical",
+      "typical_additional_docs": ["Medical/hospital records"]
+    },
+    {
+      "id": "multiple_disabilities",
+      "name": "Multiple Disabilities Including Deaf-Blindness",
+      "group": "Multiple",
+      "typical_additional_docs": ["Assessment reports for each contributing condition"]
+    }
+  ],
+  "related_scheme_adip": {
+    "name": "ADIP (Assistance to Disabled Persons for Purchase/Fitting of Aids and Appliances)",
+    "note": "Referenced as a next step after UDID — not part of MVP scope, shown for roadmap context only.",
+    "eligibility": "At least 40% disability (per UDID/certificate) and household income under ₹20,000/month.",
+    "subsidy_tiers": [
+      { "monthly_household_income_inr": "< 15,000", "benefit": "Free assistive device" },
+      { "monthly_household_income_inr": "15,000–20,000", "benefit": "50% subsidy on assistive device" }
+    ],
+    "source": "https://socialjustice.gov.in/writereaddata/UploadFile/adipsch.pdf"
+  }
+}
