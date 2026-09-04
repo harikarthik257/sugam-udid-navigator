@@ -4,9 +4,10 @@ import udidData from "@/data/schemes/udid.json";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// Stable (non-preview) model, confirmed free-tier eligible — avoids relying
-// on a preview model that could change or require a paid tier mid-hackathon.
-const MODEL = "gemini-2.5-flash";
+// gemini-2.5-flash was deprecated for new users as of this build (confirmed
+// live by the API itself, which pointed to this replacement); confirmed
+// free-tier eligible per ai.google.dev/gemini-api/docs/pricing.
+const MODEL = "gemini-3.6-flash";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -71,6 +72,29 @@ function toGeminiContents(history: ChatMessage[], latest: string): Content[] {
   ];
 }
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Gemini's free tier intermittently returns 503 "high demand, try again" —
+// described by Google as usually-temporary spikes, confirmed by observing
+// two such failures in manual testing that succeeded moments later. Retry
+// a couple of times with backoff before surfacing an error to the user.
+async function generateContentWithRetry(
+  params: Parameters<typeof ai.models.generateContent>[0]
+) {
+  const delaysMs = [1500, 3500];
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await ai.models.generateContent(params);
+    } catch (err) {
+      const isTransient = err instanceof ApiError && err.status === 503;
+      if (!isTransient || attempt >= delaysMs.length) throw err;
+      await sleep(delaysMs[attempt]);
+    }
+  }
+}
+
 function buildChecklist(categoryId: string) {
   const category = udidData.disability_categories.find((c) => c.id === categoryId);
   if (!category) return null;
@@ -106,7 +130,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const extraction = await ai.models.generateContent({
+    const extraction = await generateContentWithRetry({
       model: MODEL,
       contents: toGeminiContents(history, message),
       config: {
@@ -148,28 +172,31 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Internal error matching category." }, { status: 500 });
     }
 
-    const explanation = await ai.models.generateContent({
+    // The step-by-step / document list is rendered separately, deterministically,
+    // straight from `checklist` (see page.tsx) — never from LLM output. So this
+    // call only needs a short human opening, not a restatement of the facts:
+    // keeps the response fast, avoids duplicated content, and avoids markdown
+    // syntax showing up as literal text in the plain-text chat bubble.
+    const opening = await generateContentWithRetry({
       model: MODEL,
       contents: [
         {
           role: "user",
           parts: [
             {
-              text: "Write the guidance now: a short warm opening acknowledging their situation, then the application steps as a numbered list, then the documents needed (general + category-specific) as a bullet list, then the disclaimer.",
+              text: `Write a short (2-3 sentence) warm, plain-text opening acknowledging their situation and confirming their match: "${checklist.category.name}". Do not list steps or documents — those are shown separately. Plain text only: no markdown, no headers, no bullet points, no asterisks.`,
             },
           ],
         },
       ],
       config: {
-        systemInstruction: `You explain UDID (disability certificate) application guidance warmly and clearly in plain ${
+        systemInstruction: `You write a short, warm acknowledgment in plain ${
           result.language === "hi" ? "Hindi" : "English"
-        }, suitable for someone who may not be familiar with government processes. You must ONLY use the facts given to you in the JSON below — do not add, guess, or invent any requirement, office name, percentage, or document not present in it. End with the disclaimer text provided, translated naturally if needed.\n\nFACTS (source of truth, do not deviate):\n${JSON.stringify(
-          checklist
-        )}`,
+        }, suitable for someone who may not be familiar with government processes. Do not invent any requirement, office name, percentage, or document — those come from elsewhere.`,
       },
     });
 
-    const explanationText = explanation.text ?? "";
+    const explanationText = opening.text ?? "";
 
     return NextResponse.json({
       type: "checklist",

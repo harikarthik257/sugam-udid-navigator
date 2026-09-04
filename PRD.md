@@ -83,12 +83,20 @@ generation:
 No budget for paid API usage. Anthropic's API has no ongoing free tier (only
 a one-time ~$5 trial credit for new accounts), so the app uses the
 **Google Gemini API free tier** instead — genuinely free and ongoing (not a
-trial), confirmed free-tier model (`gemini-2.5-flash`, not a preview model,
-to avoid an unstable/paid-only model changing mid-hackathon), via the
-`@google/genai` Node SDK. Structured output is enforced with
-`responseMimeType: "application/json"` + `responseJsonSchema` rather than
-function-calling, since that's the more direct fit for "always return this
-exact shape."
+trial), model `gemini-3.6-flash` (confirmed free-tier eligible; the original
+choice, `gemini-2.5-flash`, turned out to be deprecated for new users —
+caught live during testing, the API's own error message named the
+replacement), via the `@google/genai` Node SDK. Structured output is
+enforced with `responseMimeType: "application/json"` + `responseJsonSchema`
+rather than function-calling, since that's the more direct fit for "always
+return this exact shape." The free tier intermittently returns transient
+503 "high demand" errors (observed directly in testing); the app retries
+those automatically before surfacing an error.
+
+Only one LLM call generates free-form text (a short warm opening) — the
+actual steps/documents/disclaimer are rendered deterministically from the
+dataset, never from LLM output, both to avoid duplicating content the
+structured checklist already shows and to keep response latency down.
 
 **Known tradeoff to flag:** Gemini's free tier's terms allow prompt/response
 content to be used to improve Google's products (unlike the paid tier, which
@@ -118,12 +126,12 @@ extension points, not promised deliverables):**
 
 ## Tech stack
 - **Frontend:** Next.js + React + Tailwind, deployed free on Vercel.
-- **AI:** Google Gemini API free tier (`gemini-2.5-flash` via `@google/genai`)
+- **AI:** Google Gemini API free tier (`gemini-3.6-flash` via `@google/genai`)
   for NLU extraction + response generation — see "AI provider" above for why
   this isn't Claude.
 - **Voice:** Web Speech API (browser-native STT/TTS) — zero extra infra.
 - **Data:** hand-curated, source-cited eligibility/process dataset committed
-  to the repo (`data/schemes/udid.json` or similar) — not scraped, not
+  to the repo (`web/data/schemes/udid.json`) — not scraped, not
   LLM-generated; each entry cites its source URL.
 - **Hosting:** Vercel free tier. No database required for MVP (stateless
   per-session conversation).
@@ -152,7 +160,7 @@ Verified against the live rules page, plus the actual submission form fields
   "challenges faced" section should be honest, not anticipatory.
 - **Built With** — up to 25 tags (languages/frameworks/platforms/cloud
   services/databases/APIs). Draft, given the current stack: `nextjs`,
-  `react`, `typescript`, `tailwindcss`, `google-gemini`, `gemini-2.5-flash`,
+  `react`, `typescript`, `tailwindcss`, `google-gemini`, `gemini-3.6-flash`,
   `google-genai-sdk`, `web-speech-api`, `node.js`, `vercel`. Add `git`/
   `github` once the repo exists.
 - **Try it out links** — demo site / GitHub repo (at least the GitHub link
