@@ -209,19 +209,30 @@ export default function Home() {
                 <p className="font-semibold">
                   Category matched: {m.checklist.category.name}
                 </p>
-                <p className="mt-2 font-semibold">Steps</p>
+
+                <div className="mt-3 rounded-lg border-2 border-blue-500/40 bg-blue-500/10 px-3 py-2">
+                  <p className="font-semibold text-blue-900 dark:text-blue-200">
+                    Specific to {m.checklist.category.name}
+                  </p>
+                  <ul className="list-disc list-inside">
+                    {m.checklist.category.typical_additional_docs.map((d, idx) => (
+                      <li key={idx}>{d}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <p className="mt-3 font-semibold">
+                  Steps — the same for every category, since it&apos;s one government process
+                </p>
                 <ol className="list-decimal list-inside">
                   {m.checklist.process.steps.map((s, idx) => (
                     <li key={idx}>{s}</li>
                   ))}
                 </ol>
-                <p className="mt-2 font-semibold">Documents needed</p>
+                <p className="mt-2 font-semibold">General documents — needed for any category</p>
                 <ul className="list-disc list-inside">
                   {m.checklist.process.typical_documents.map((d, idx) => (
                     <li key={idx}>{d}</li>
-                  ))}
-                  {m.checklist.category.typical_additional_docs.map((d, idx) => (
-                    <li key={`c-${idx}`}>{d}</li>
                   ))}
                 </ul>
                 <p className="mt-2 italic opacity-80">{m.checklist.disclaimer}</p>

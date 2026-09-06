@@ -4,10 +4,13 @@ import udidData from "@/data/schemes/udid.json";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// gemini-2.5-flash was deprecated for new users as of this build (confirmed
-// live by the API itself, which pointed to this replacement); confirmed
-// free-tier eligible per ai.google.dev/gemini-api/docs/pricing.
-const MODEL = "gemini-3.6-flash";
+// gemini-2.5-flash was deprecated for new users (confirmed live by the API,
+// which pointed to gemini-3.6-flash) — but that model's free tier turned out
+// to be capped at just 20 requests/day (confirmed live via a 429
+// RESOURCE_EXHAUSTED error), unworkable even for testing. Free-tier quotas
+// are scoped per-model, and "-lite" variants are consistently reported with
+// much more generous free limits, so this uses gemini-3.5-flash-lite.
+const MODEL = "gemini-3.5-flash-lite";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -16,6 +19,7 @@ type ExtractResult = {
   category_confidence: "high" | "medium" | "low" | "none";
   needs_clarification: boolean;
   clarifying_question: string | null;
+  opening_message: string | null;
   language: "en" | "hi";
 };
 
@@ -45,6 +49,11 @@ const EXTRACT_SCHEMA = {
       description:
         "A short, warm, plain-language follow-up question, in the user's detected language, if needs_clarification is true. Otherwise null.",
     },
+    opening_message: {
+      type: ["string", "null"],
+      description:
+        "If needs_clarification is false: a short (2-3 sentence) warm, plain-text opening acknowledging their situation and confirming the matched category by name. Plain text only — no markdown, no headers, no bullet points, no asterisks, since the actual steps/documents are rendered separately from a fixed dataset, not from this text. Otherwise null.",
+    },
     language: {
       type: "string",
       enum: ["en", "hi"],
@@ -56,6 +65,7 @@ const EXTRACT_SCHEMA = {
     "category_confidence",
     "needs_clarification",
     "clarifying_question",
+    "opening_message",
     "language",
   ],
 };
@@ -135,7 +145,7 @@ export async function POST(request: Request) {
       contents: toGeminiContents(history, message),
       config: {
         systemInstruction:
-          "You help match a person's plain-language description of their (or a family member's) disability to one of a fixed set of 21 legally recognized disability categories in India, so they can be pointed to the correct UDID (disability certificate) application guidance. You are not a diagnostic tool and must never assess severity yourself — only identify which named category best fits what the user described, or ask a clarifying question if it's unclear. Detect whether the user is writing in English or Hindi. Respond ONLY with the JSON object described by the schema.",
+          "You help match a person's plain-language description of their (or a family member's) disability to one of a fixed set of 21 legally recognized disability categories in India, so they can be pointed to the correct UDID (disability certificate) application guidance. You are not a diagnostic tool and must never assess severity yourself — only identify which named category best fits what the user described, or ask a clarifying question if it's unclear. When you have a confident match, also write a short warm opening_message acknowledging their situation in the same language they used — do not invent any requirement, office name, percentage, or document, since the real checklist is rendered separately from a fixed dataset. Detect whether the user is writing in English or Hindi. Respond ONLY with the JSON object described by the schema.",
         responseMimeType: "application/json",
         responseJsonSchema: EXTRACT_SCHEMA,
       },
@@ -173,34 +183,13 @@ export async function POST(request: Request) {
     }
 
     // The step-by-step / document list is rendered separately, deterministically,
-    // straight from `checklist` (see page.tsx) — never from LLM output. So this
-    // call only needs a short human opening, not a restatement of the facts:
-    // keeps the response fast, avoids duplicated content, and avoids markdown
-    // syntax showing up as literal text in the plain-text chat bubble.
-    const opening = await generateContentWithRetry({
-      model: MODEL,
-      contents: [
-        {
-          role: "user",
-          parts: [
-            {
-              text: `Write a short (2-3 sentence) warm, plain-text opening acknowledging their situation and confirming their match: "${checklist.category.name}". Do not list steps or documents — those are shown separately. Plain text only: no markdown, no headers, no bullet points, no asterisks.`,
-            },
-          ],
-        },
-      ],
-      config: {
-        systemInstruction: `You write a short, warm acknowledgment in plain ${
-          result.language === "hi" ? "Hindi" : "English"
-        }, suitable for someone who may not be familiar with government processes. Do not invent any requirement, office name, percentage, or document — those come from elsewhere.`,
-      },
-    });
-
-    const explanationText = opening.text ?? "";
-
+    // straight from `checklist` (see page.tsx) — never from LLM output. The
+    // opening line comes from the same extraction call above (opening_message)
+    // rather than a second API call, to stay well within the free tier's
+    // per-day request quota.
     return NextResponse.json({
       type: "checklist",
-      message: explanationText,
+      message: result.opening_message ?? "",
       language: result.language,
       checklist,
     });
