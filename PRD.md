@@ -116,6 +116,25 @@ descriptions, this is worth surfacing to users (e.g. in the disclaimer) —
 revisit if a low-cost paid tier or another provider's free credits (e.g. the
 GatewayHacks "Adaption" sponsor credit, unconfirmed) become available.
 
+## Landing page: 3D scrollytelling story
+`/` is a scroll-driven 3D narrative (React Three Fiber + GSAP ScrollTrigger)
+that tells the researched problem — 63M people, the 90%/60% unawareness
+stat, "mandatory since 2024" — via a camera moving down a corridor of doors,
+ending with the one door that matters opening as the CTA appears. The
+working chat tool itself is unchanged, just moved to `/navigator`.
+
+Two real bugs surfaced in verification, not just written correctly the
+first time: the door's open/light-up animation was driven by React state
+updated inside another component's `useFrame`, which doesn't reliably
+propagate at 60fps — fixed by reading scroll progress directly every frame,
+the same way the camera rig already did. Separately, hit genuine WebGL
+context loss after a few seconds with zero scrolling, traced to drei's
+`Environment`/PMREM generation being too GPU-expensive for the sandbox's
+software renderer — removed it rather than gamble that real users' GPUs
+would fare better, using plain ambient/hemisphere/directional lights
+instead. Respects `prefers-reduced-motion` (static final pose, no
+scroll-driven camera).
+
 ## MVP scope (4 weeks, solo)
 **In scope:**
 - One scheme, end-to-end, done well: **UDID / disability certificate.**
