@@ -161,10 +161,11 @@ Verified against the live rules page, plus the actual submission form fields
 - **Built With** — up to 25 tags (languages/frameworks/platforms/cloud
   services/databases/APIs). Draft, given the current stack: `nextjs`,
   `react`, `typescript`, `tailwindcss`, `google-gemini`, `gemini-3.6-flash`,
-  `google-genai-sdk`, `web-speech-api`, `node.js`, `vercel`. Add `git`/
-  `github` once the repo exists.
-- **Try it out links** — demo site / GitHub repo (at least the GitHub link
-  should be included, even if a live Vercel deploy is also added).
+  `google-genai-sdk`, `web-speech-api`, `node.js`, `vercel`, `git`, `github`.
+- **Try it out links** — both ready:
+  - Live demo: https://sugam-udid-navigator.vercel.app (deployed on Vercel;
+    tested across 3 different disability categories, all correctly matched)
+  - GitHub repo: https://github.com/harikarthik257/sugam-udid-navigator
 - **Project Media** — image gallery, JPG/PNG/GIF, 5MB max each, 3:2 ratio
   recommended, up to 15 images. At least one required.
 - **Video demo** — YouTube, Facebook Video, Vimeo, or Youku URL, embedded at
