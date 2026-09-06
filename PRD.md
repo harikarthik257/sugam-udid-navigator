@@ -83,20 +83,31 @@ generation:
 No budget for paid API usage. Anthropic's API has no ongoing free tier (only
 a one-time ~$5 trial credit for new accounts), so the app uses the
 **Google Gemini API free tier** instead — genuinely free and ongoing (not a
-trial), model `gemini-3.6-flash` (confirmed free-tier eligible; the original
-choice, `gemini-2.5-flash`, turned out to be deprecated for new users —
-caught live during testing, the API's own error message named the
-replacement), via the `@google/genai` Node SDK. Structured output is
-enforced with `responseMimeType: "application/json"` + `responseJsonSchema`
-rather than function-calling, since that's the more direct fit for "always
-return this exact shape." The free tier intermittently returns transient
-503 "high demand" errors (observed directly in testing); the app retries
-those automatically before surfacing an error.
+trial), model `gemini-3.5-flash-lite`, via the `@google/genai` Node SDK.
+Getting here took two live corrections, not just a docs lookup:
+`gemini-2.5-flash` (original choice) turned out deprecated for new users —
+the API's own error named the replacement, `gemini-3.6-flash` — which then
+turned out to have a free-tier cap of just **20 requests/day** (hit a real
+429 RESOURCE_EXHAUSTED during testing), unworkable even for normal testing.
+Quota is scoped per-model, so switching to the `-lite` variant, which is
+consistently reported with a far more generous free quota, gave an
+immediately fresh, workable quota. Structured output is enforced with
+`responseMimeType: "application/json"` + `responseJsonSchema` rather than
+function-calling, since that's the more direct fit for "always return this
+exact shape." The free tier intermittently returns transient 503 "high
+demand" errors (observed directly in testing); the app retries those
+automatically before surfacing an error.
 
-Only one LLM call generates free-form text (a short warm opening) — the
-actual steps/documents/disclaimer are rendered deterministically from the
-dataset, never from LLM output, both to avoid duplicating content the
-structured checklist already shows and to keep response latency down.
+Only one LLM call happens per turn (extraction and a short warm opening
+line are returned together in the same structured response) — both to
+halve free-tier usage and because the actual steps/documents/disclaimer are
+rendered deterministically from the dataset, never from LLM output. The UI
+also visually separates the one thing that legitimately varies per category
+(the specific required document) into its own highlighted callout, since a
+user reported the responses as feeling "standard for every disability" —
+accurate (the government process steps really are identical for every
+category) but the one real difference was easy to miss, buried as the last
+bullet in an otherwise-identical list.
 
 **Known tradeoff to flag:** Gemini's free tier's terms allow prompt/response
 content to be used to improve Google's products (unlike the paid tier, which
@@ -126,7 +137,7 @@ extension points, not promised deliverables):**
 
 ## Tech stack
 - **Frontend:** Next.js + React + Tailwind, deployed free on Vercel.
-- **AI:** Google Gemini API free tier (`gemini-3.6-flash` via `@google/genai`)
+- **AI:** Google Gemini API free tier (`gemini-3.5-flash-lite` via `@google/genai`)
   for NLU extraction + response generation — see "AI provider" above for why
   this isn't Claude.
 - **Voice:** Web Speech API (browser-native STT/TTS) — zero extra infra.
@@ -160,7 +171,7 @@ Verified against the live rules page, plus the actual submission form fields
   "challenges faced" section should be honest, not anticipatory.
 - **Built With** — up to 25 tags (languages/frameworks/platforms/cloud
   services/databases/APIs). Draft, given the current stack: `nextjs`,
-  `react`, `typescript`, `tailwindcss`, `google-gemini`, `gemini-3.6-flash`,
+  `react`, `typescript`, `tailwindcss`, `google-gemini`, `gemini-3.5-flash-lite`,
   `google-genai-sdk`, `web-speech-api`, `node.js`, `vercel`, `git`, `github`.
 - **Try it out links** — both ready:
   - Live demo: https://sugam-udid-navigator.vercel.app (deployed on Vercel;
