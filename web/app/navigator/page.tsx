@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 // Minimal Web Speech API surface — not part of TypeScript's lib.dom.d.ts.
@@ -154,21 +155,32 @@ export default function Home() {
   }
 
   return (
-    <div className={`min-h-full flex flex-col ${largeText ? "text-lg" : "text-base"}`}>
-      <header className="border-b border-black/10 dark:border-white/10 px-4 py-3 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+    <div
+      className={`min-h-screen flex flex-col bg-[#0c0e12] text-white ${
+        largeText ? "text-lg" : "text-base"
+      }`}
+    >
+      <header className="border-b border-white/10 px-4 py-3 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-semibold text-xl">Sugam — Your UDID, Simplified</h1>
-          <p className="text-sm opacity-70">
+          <Link
+            href="/"
+            className="text-xs uppercase tracking-wide text-amber-300/80 hover:text-amber-300 transition-colors"
+          >
+            ← Sugam
+          </Link>
+          <h1 className="font-semibold text-xl mt-0.5">Your UDID, Simplified</h1>
+          <p className="text-sm text-white/60">
             A guide to applying for your (or your family member&apos;s) disability
             certificate — not a diagnosis, just a map through the process.
           </p>
         </div>
-        <div className="flex gap-3 items-center text-sm">
+        <div className="flex gap-3 items-center text-sm text-white/80">
           <label className="flex items-center gap-1 cursor-pointer">
             <input
               type="checkbox"
               checked={voiceOut}
               onChange={(e) => setVoiceOut(e.target.checked)}
+              className="accent-amber-400"
             />
             Read replies aloud
           </label>
@@ -177,13 +189,14 @@ export default function Home() {
               type="checkbox"
               checked={largeText}
               onChange={(e) => setLargeText(e.target.checked)}
+              className="accent-amber-400"
             />
             Large text
           </label>
         </div>
       </header>
 
-      <p className="text-xs opacity-60 px-4 py-2 border-b border-black/10 dark:border-white/10 max-w-2xl w-full mx-auto text-center">
+      <p className="text-xs text-white/50 px-4 py-2 border-b border-white/10 max-w-2xl w-full mx-auto text-center">
         This runs on a free AI tier, which means what you type here may be used by the
         provider to improve their models. Avoid including names or other identifying
         details you&apos;d rather not share.
@@ -199,19 +212,19 @@ export default function Home() {
             key={i}
             className={`rounded-xl px-4 py-3 whitespace-pre-wrap ${
               m.role === "user"
-                ? "self-end bg-blue-600 text-white"
-                : "self-start bg-black/5 dark:bg-white/10"
+                ? "self-end bg-amber-400 text-black"
+                : "self-start bg-white/5 border border-white/10"
             }`}
           >
             {m.content}
             {m.checklist && (
-              <div className="mt-3 border-t border-black/10 dark:border-white/10 pt-3 text-sm">
+              <div className="mt-3 border-t border-white/10 pt-3 text-sm">
                 <p className="font-semibold">
                   Category matched: {m.checklist.category.name}
                 </p>
 
-                <div className="mt-3 rounded-lg border-2 border-blue-500/40 bg-blue-500/10 px-3 py-2">
-                  <p className="font-semibold text-blue-900 dark:text-blue-200">
+                <div className="mt-3 rounded-lg border-2 border-amber-400/40 bg-amber-400/10 px-3 py-2">
+                  <p className="font-semibold text-amber-300">
                     Specific to {m.checklist.category.name}
                   </p>
                   <ul className="list-disc list-inside">
@@ -235,18 +248,21 @@ export default function Home() {
                     <li key={idx}>{d}</li>
                   ))}
                 </ul>
-                <p className="mt-2 italic opacity-80">{m.checklist.disclaimer}</p>
+                <p className="mt-2 italic text-white/60">{m.checklist.disclaimer}</p>
               </div>
             )}
           </div>
         ))}
         {loading && (
-          <div className="self-start rounded-xl px-4 py-3 bg-black/5 dark:bg-white/10 opacity-70">
+          <div className="self-start rounded-xl px-4 py-3 bg-white/5 border border-white/10 text-white/60">
             Thinking…
           </div>
         )}
         {error && (
-          <div role="alert" className="self-start rounded-xl px-4 py-3 bg-red-100 text-red-800">
+          <div
+            role="alert"
+            className="self-start rounded-xl px-4 py-3 bg-red-500/10 border border-red-500/30 text-red-300"
+          >
             {error}
           </div>
         )}
@@ -254,7 +270,7 @@ export default function Home() {
       </div>
 
       <form
-        className="border-t border-black/10 dark:border-white/10 p-4 flex gap-2 max-w-2xl w-full mx-auto"
+        className="border-t border-white/10 p-4 flex gap-2 max-w-2xl w-full mx-auto"
         onSubmit={(e) => {
           e.preventDefault();
           sendMessage();
@@ -266,7 +282,7 @@ export default function Home() {
           aria-pressed={listening}
           aria-label={listening ? "Stop voice input" : "Start voice input"}
           className={`rounded-full w-11 h-11 flex items-center justify-center border ${
-            listening ? "bg-red-600 text-white border-red-600" : "border-black/20 dark:border-white/20"
+            listening ? "bg-red-600 text-white border-red-600" : "border-white/20 text-white/80"
           }`}
         >
           🎤
@@ -276,7 +292,7 @@ export default function Home() {
         </label>
         <input
           id="chat-input"
-          className="flex-1 rounded-full border border-black/20 dark:border-white/20 px-4 py-2 bg-transparent"
+          className="flex-1 rounded-full border border-white/20 bg-white/5 text-white placeholder-white/40 px-4 py-2"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={
@@ -288,7 +304,7 @@ export default function Home() {
         <button
           type="submit"
           disabled={loading || !input.trim()}
-          className="rounded-full px-5 py-2 bg-blue-600 text-white disabled:opacity-50"
+          className="rounded-full px-5 py-2 bg-amber-400 text-black font-semibold disabled:opacity-40 hover:bg-amber-300 transition-colors"
         >
           Send
         </button>
